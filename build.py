@@ -20,8 +20,13 @@ template = """
                 background-position: center;
             }}
             body {{
-                background: url('https://www.loliapi.com/acg') fixed;
+                background: url('https://api.milkymay.top/api/background/background.php') fixed;
+                background-size: cover; /* 关键属性：使背景完全覆盖屏幕 */
+                background-repeat: no-repeat; /* 防止图片平铺 */
+                background-position: center center; /* 背景居中显示 */
                 font-family: Arial, sans-serif;
+                margin: 0; /* 移除默认边距 */
+                min-height: 100vh; /* 确保body至少占满整个屏幕高度 */
             }}
             .container {{
                 max-width: 800px;
