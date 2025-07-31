@@ -1,0 +1,35 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]  # 在推送到主分支时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 允许工作流向 gh-pages 分支写入
+      pages: write     # 允许部署 Pages
+      id-token: write  # 允许 OIDC 认证
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.8.x'  # 使用最新的 Python 3 版本
+
+    - name: Install dependencies
+      run: pip install markdown
+
+    - name: Run build script
+      run: python build.py  # 执行构建脚本生成 build 文件夹
+
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v3  # 官方 Pages 部署工具
+      with:
+        # 设置构建输出目录（build.py 生成的文件夹）
+        artifact_name: build-artifact-${{ github.run_id }}
+        path: ./build
