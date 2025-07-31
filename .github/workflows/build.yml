@@ -26,10 +26,19 @@ jobs:
 
     - name: Run build script
       run: python build.py  # 执行构建脚本生成 build 文件夹
-      
-    - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v3  # 官方 Pages 部署工具
+
+    # 配置Pages环境
+    - name: Configure Pages
+      uses: actions/configure-pages@v4
+
+    # 直接上传构建产物（不使用run_id）
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        # 设置构建输出目录（build.py 生成的文件夹）
-        artifact_name: build-artifact-${{ github.run_id }}
         path: ./build
+
+    # 部署到GitHub Pages
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      timeout-minutes: 3
